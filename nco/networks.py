@@ -60,10 +60,10 @@ if __name__ == "__main__":
             xs = [np.random.randint(int_range, size=(1, 1))[0][0] for _ in range(random_seq_length)]
             X.append(xs)
 
-        X = pad_sequences(X, padding='post', truncating='post')
+        X = pad_sequences(X, padding='post', truncating='post', maxlen=sequence_max_length)
 
         Y = np.random.rand(input_data_size, 1)
-        model = lstm_network(input_dim=51, embedding_dim=128)
+        model = lstm_network(input_dim=50, embedding_dim=128)
         model.summary()
         train(model, X, Y, epochs=3, batch_size=10)
 
