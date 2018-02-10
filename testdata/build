@@ -1,24 +1,25 @@
-exec
+exec-ddl
 CREATE TABLE a (x INT, y INT)
 ----
-table a
-  x NULL
-  y NULL
+name:"a" id:1 parent_id:0 version:0 up_version:false modification_time:<> columns:<name:"x" id:1 type:<semantic_type:INT width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"y" id:2 type:<semantic_type:INT width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"rowid" id:3 type:<semantic_type:INT width:0 precision:0 visible_type:NONE > nullable:false hidden:true > next_column_id:0 next_family_id:0 primary_index:<name:"" id:0 unique:false foreign_key:<table:0 index:0 name:"" validity:Validated shared_prefix_len:0 on_delete:NO_ACTION on_update:NO_ACTION > interleave:<> partitioning:<num_columns:0 > type:FORWARD > next_index_id:0 next_mutation_id:0 format_version:0 state:PUBLIC view_query:"" gc_deadline:0 
 
 build
 SELECT * FROM a WHERE x < 5
 ----
-arrange
- ├── columns: x:1* y:2
- └── select
-      ├── columns: a.x:1* a.y:2
-      ├── scan
-      │    └── columns: a.x:1 a.y:2
-      └── lt [unbound=(1)]
-           ├── variable: a.x [unbound=(1)]
-           └── const: 5
+project
+ ├── columns: a.x:int:null:1 a.y:int:null:2
+ ├── select
+ │    ├── columns: a.x:int:null:1 a.y:int:null:2 a.rowid:int:3
+ │    ├── scan
+ │    │    └── columns: a.x:int:null:1 a.y:int:null:2 a.rowid:int:3
+ │    └── lt [type=bool]
+ │         ├── variable: a.x [type=int]
+ │         └── const: 5 [type=int]
+ └── projections
+      ├── variable: a.x [type=int]
+      └── variable: a.y [type=int]
 
 encode
 SELECT * FROM a WHERE x < 5
 ----
-101,58,101,2,5,3,15,60,79
+1600,57,1601,2,5,3,16,59,1601,2,1602,2,8,60
