@@ -29,6 +29,10 @@ func (c *TestCatalog) CreateTable(stmt *tree.CreateTable) *sqlbase.TableDescript
 			if err != nil {
 				panic(err)
 			}
+		case *tree.UniqueConstraintTableDef:
+			if def.PrimaryKey {
+				hasPrimaryKey = true
+			}
 		}
 		// TODO(rytaft): In the future we will likely want to check for unique
 		// constraints, indexes, and foreign key constraints to determine
