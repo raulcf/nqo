@@ -97,7 +97,14 @@ func generateImpl(n int, tables tabSet, join tabSet, joinSlice []table) [][]tabl
 		if !join.Contains(i) {
 			newJoin := join.Copy()
 			newJoin.Add(i)
-			newTables := joinsWith[table(i)].Difference(newJoin)
+
+			var jw tabSet
+			newJoin.ForEach(func (j int) {
+				jw.UnionWith(*joinsWith[table(j)])
+			})
+			newTables := jw.Difference(newJoin)
+
+			//newTables := joinsWith[table(i)].Difference(newJoin)
 			newJoinSlice := make([]table, len(joinSlice))
 			copy(newJoinSlice, joinSlice)
 			newJoinSlice = append(newJoinSlice, table(i))
@@ -118,20 +125,61 @@ func GenerateJoins(max int) [][]table {
 
 func GenerateQueries(max int) []string {
 	joins := GenerateJoins(max)
-	var queries []string
+	queries := make([]string, 0, len(joins))
 	for _, join := range joins {
-		var query bytes.Buffer
-		query.WriteString("SELECT * FROM ")
+		query := make([]bytes.Buffer, 1)
+		query[0].WriteString("SELECT * FROM ")
 		if len(join) > 0 {
-			query.WriteString(tableNames[join[0]])
+			query[0].WriteString(tableNames[join[0]])
 		}
 		for i := 1; i < len(join); i++ {
-			query.WriteString(" JOIN ")
-			query.WriteString(tableNames[join[i]])
-			query.WriteString(" ON ")
-			query.WriteString(joinCondition[joinCondKey{join[i-1], join[i]}])
+			for j := range query {
+				q := &query[j]
+				q.WriteString(" JOIN ")
+				q.WriteString(tableNames[join[i]])
+				q.WriteString(" ON ")
+			}
+
+			var conditions []string
+			for j := 0; j < i; j++ {
+				if cond, ok := joinCondition[joinCondKey{join[j], join[i]}]; ok {
+					conditions = append(conditions, cond)
+				}
+			}
+
+			var oldQuery []string
+			if len(conditions) > 1 {
+				// Save the old query.
+				oldQuery = make([]string, 0, len(query))
+				for j := 0; j < len(query); j++ {
+					q := &query[j]
+					oldQuery = append(oldQuery, q.String())
+				}
+			}
+
+			for j := 0; j < len(query); j++ {
+				q := &query[j]
+				q.WriteString(conditions[0])
+			}
+
+			if len(conditions) > 1 {
+				// Create new sets of queries for each condition.
+				for k := 1; k < len(conditions); k++ {
+					for _, s := range oldQuery {
+						var newQuery bytes.Buffer
+						newQuery.WriteString(s)
+						newQuery.WriteString(conditions[k])
+						query = append(query, newQuery)
+					}
+				}
+			}
+
+			//query.WriteString(joinCondition[joinCondKey{join[i-1], join[i]}])
 		}
-		queries = append(queries, query.String())
+
+		for i := range query {
+			queries = append(queries, query[i].String())
+		}
 	}
 	return queries
 }
