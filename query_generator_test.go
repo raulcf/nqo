@@ -37,8 +37,8 @@ func TestGenerateQueries(t *testing.T) {
 }
 
 func TestPrintAllQueries(t *testing.T) {
-	printAllQueries(t, 8)
-	//printAllEncoded(t)
+	//printAllQueries(t, 8)
+	printAllEncoded(t)
 }
 
 func printAllQueries(t *testing.T, max int) {

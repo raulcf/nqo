@@ -104,7 +104,6 @@ func generateImpl(n int, tables tabSet, join tabSet, joinSlice []table) [][]tabl
 			})
 			newTables := jw.Difference(newJoin)
 
-			//newTables := joinsWith[table(i)].Difference(newJoin)
 			newJoinSlice := make([]table, len(joinSlice))
 			copy(newJoinSlice, joinSlice)
 			newJoinSlice = append(newJoinSlice, table(i))
@@ -132,6 +131,7 @@ func GenerateQueries(max int) []string {
 		if len(join) > 0 {
 			query[0].WriteString(tableNames[join[0]])
 		}
+
 		for i := 1; i < len(join); i++ {
 			for j := range query {
 				q := &query[j]
@@ -140,6 +140,8 @@ func GenerateQueries(max int) []string {
 				q.WriteString(" ON ")
 			}
 
+			// Get all the conditions that match with the preceding tables in
+			// the join.
 			var conditions []string
 			for j := 0; j < i; j++ {
 				if cond, ok := joinCondition[joinCondKey{join[j], join[i]}]; ok {
@@ -173,8 +175,6 @@ func GenerateQueries(max int) []string {
 					}
 				}
 			}
-
-			//query.WriteString(joinCondition[joinCondKey{join[i-1], join[i]}])
 		}
 
 		for i := range query {
