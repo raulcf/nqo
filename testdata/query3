@@ -204,3 +204,686 @@ project
       ├── variable: revenue [type=float]
       ├── variable: orders.o_orderdate [type=date]
       └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	orders,
+	lineitem,
+	customer
+WHERE
+	c_mktsegment = 'MACHINERY'
+	AND c_custkey = o_custkey
+	AND l_orderkey = o_orderkey
+	AND o_orderDATE < DATE '1995-03-10'
+	AND l_shipdate > DATE '1995-03-10'
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:10 revenue:float:null:34 orders.o_orderdate:date:null:5 orders.o_shippriority:int:null:8
+ ├── group-by
+ │    ├── columns: orders.o_orderdate:date:null:5 orders.o_shippriority:int:null:8 lineitem.l_orderkey:int:null:10 revenue:float:null:34
+ │    ├── select
+ │    │    ├── columns: orders.o_orderkey:int:1 orders.o_custkey:int:2 orders.o_orderstatus:string:null:3 orders.o_totalprice:float:null:4 orders.o_orderdate:date:null:5 orders.o_orderpriority:string:null:6 orders.o_clerk:string:null:7 orders.o_shippriority:int:null:8 orders.o_comment:string:null:9 lineitem.l_orderkey:int:10 lineitem.l_partkey:int:11 lineitem.l_suppkey:int:12 lineitem.l_linenumber:int:13 lineitem.l_quantity:float:null:14 lineitem.l_extendedprice:float:null:15 lineitem.l_discount:float:null:16 lineitem.l_tax:float:null:17 lineitem.l_returnflag:string:null:18 lineitem.l_linestatus:string:null:19 lineitem.l_shipdate:date:null:20 lineitem.l_commitdate:date:null:21 lineitem.l_receiptdate:date:null:22 lineitem.l_shipinstruct:string:null:23 lineitem.l_shipmode:string:null:24 lineitem.l_comment:string:null:25 customer.c_custkey:int:26 customer.c_name:string:null:27 customer.c_address:string:null:28 customer.c_nationkey:int:29 customer.c_phone:string:null:30 customer.c_acctbal:float:null:31 customer.c_mktsegment:string:null:32 customer.c_comment:string:null:33
+ │    │    ├── inner-join
+ │    │    │    ├── columns: orders.o_orderkey:int:1 orders.o_custkey:int:2 orders.o_orderstatus:string:null:3 orders.o_totalprice:float:null:4 orders.o_orderdate:date:null:5 orders.o_orderpriority:string:null:6 orders.o_clerk:string:null:7 orders.o_shippriority:int:null:8 orders.o_comment:string:null:9 lineitem.l_orderkey:int:10 lineitem.l_partkey:int:11 lineitem.l_suppkey:int:12 lineitem.l_linenumber:int:13 lineitem.l_quantity:float:null:14 lineitem.l_extendedprice:float:null:15 lineitem.l_discount:float:null:16 lineitem.l_tax:float:null:17 lineitem.l_returnflag:string:null:18 lineitem.l_linestatus:string:null:19 lineitem.l_shipdate:date:null:20 lineitem.l_commitdate:date:null:21 lineitem.l_receiptdate:date:null:22 lineitem.l_shipinstruct:string:null:23 lineitem.l_shipmode:string:null:24 lineitem.l_comment:string:null:25 customer.c_custkey:int:26 customer.c_name:string:null:27 customer.c_address:string:null:28 customer.c_nationkey:int:29 customer.c_phone:string:null:30 customer.c_acctbal:float:null:31 customer.c_mktsegment:string:null:32 customer.c_comment:string:null:33
+ │    │    │    ├── inner-join
+ │    │    │    │    ├── columns: orders.o_orderkey:int:1 orders.o_custkey:int:2 orders.o_orderstatus:string:null:3 orders.o_totalprice:float:null:4 orders.o_orderdate:date:null:5 orders.o_orderpriority:string:null:6 orders.o_clerk:string:null:7 orders.o_shippriority:int:null:8 orders.o_comment:string:null:9 lineitem.l_orderkey:int:10 lineitem.l_partkey:int:11 lineitem.l_suppkey:int:12 lineitem.l_linenumber:int:13 lineitem.l_quantity:float:null:14 lineitem.l_extendedprice:float:null:15 lineitem.l_discount:float:null:16 lineitem.l_tax:float:null:17 lineitem.l_returnflag:string:null:18 lineitem.l_linestatus:string:null:19 lineitem.l_shipdate:date:null:20 lineitem.l_commitdate:date:null:21 lineitem.l_receiptdate:date:null:22 lineitem.l_shipinstruct:string:null:23 lineitem.l_shipmode:string:null:24 lineitem.l_comment:string:null:25
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: orders.o_orderkey:int:1 orders.o_custkey:int:2 orders.o_orderstatus:string:null:3 orders.o_totalprice:float:null:4 orders.o_orderdate:date:null:5 orders.o_orderpriority:string:null:6 orders.o_clerk:string:null:7 orders.o_shippriority:int:null:8 orders.o_comment:string:null:9
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: lineitem.l_orderkey:int:10 lineitem.l_partkey:int:11 lineitem.l_suppkey:int:12 lineitem.l_linenumber:int:13 lineitem.l_quantity:float:null:14 lineitem.l_extendedprice:float:null:15 lineitem.l_discount:float:null:16 lineitem.l_tax:float:null:17 lineitem.l_returnflag:string:null:18 lineitem.l_linestatus:string:null:19 lineitem.l_shipdate:date:null:20 lineitem.l_commitdate:date:null:21 lineitem.l_receiptdate:date:null:22 lineitem.l_shipinstruct:string:null:23 lineitem.l_shipmode:string:null:24 lineitem.l_comment:string:null:25
+ │    │    │    │    └── true [type=bool]
+ │    │    │    ├── scan
+ │    │    │    │    └── columns: customer.c_custkey:int:26 customer.c_name:string:null:27 customer.c_address:string:null:28 customer.c_nationkey:int:29 customer.c_phone:string:null:30 customer.c_acctbal:float:null:31 customer.c_mktsegment:string:null:32 customer.c_comment:string:null:33
+ │    │    │    └── true [type=bool]
+ │    │    └── and [type=bool]
+ │    │         ├── and [type=bool]
+ │    │         │    ├── and [type=bool]
+ │    │         │    │    ├── and [type=bool]
+ │    │         │    │    │    ├── eq [type=bool]
+ │    │         │    │    │    │    ├── variable: customer.c_mktsegment [type=string]
+ │    │         │    │    │    │    └── const: 'MACHINERY' [type=string]
+ │    │         │    │    │    └── eq [type=bool]
+ │    │         │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │         │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │         │    │    └── eq [type=bool]
+ │    │         │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │         │    │         └── variable: orders.o_orderkey [type=int]
+ │    │         │    └── lt [type=bool]
+ │    │         │         ├── variable: orders.o_orderdate [type=date]
+ │    │         │         └── const: '1995-03-10' [type=date]
+ │    │         └── gt [type=bool]
+ │    │              ├── variable: lineitem.l_shipdate [type=date]
+ │    │              └── const: '1995-03-10' [type=date]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	customer,
+	lineitem,
+	orders
+WHERE
+	c_mktsegment = 'MACHINERY'
+	AND c_custkey = o_custkey
+	AND l_orderkey = o_orderkey
+	AND o_orderDATE < DATE '1995-03-10'
+	AND l_shipdate > DATE '1995-03-10'
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:9 revenue:float:null:34 orders.o_orderdate:date:null:29 orders.o_shippriority:int:null:32
+ ├── group-by
+ │    ├── columns: lineitem.l_orderkey:int:null:9 orders.o_orderdate:date:null:29 orders.o_shippriority:int:null:32 revenue:float:null:34
+ │    ├── select
+ │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 lineitem.l_orderkey:int:9 lineitem.l_partkey:int:10 lineitem.l_suppkey:int:11 lineitem.l_linenumber:int:12 lineitem.l_quantity:float:null:13 lineitem.l_extendedprice:float:null:14 lineitem.l_discount:float:null:15 lineitem.l_tax:float:null:16 lineitem.l_returnflag:string:null:17 lineitem.l_linestatus:string:null:18 lineitem.l_shipdate:date:null:19 lineitem.l_commitdate:date:null:20 lineitem.l_receiptdate:date:null:21 lineitem.l_shipinstruct:string:null:22 lineitem.l_shipmode:string:null:23 lineitem.l_comment:string:null:24 orders.o_orderkey:int:25 orders.o_custkey:int:26 orders.o_orderstatus:string:null:27 orders.o_totalprice:float:null:28 orders.o_orderdate:date:null:29 orders.o_orderpriority:string:null:30 orders.o_clerk:string:null:31 orders.o_shippriority:int:null:32 orders.o_comment:string:null:33
+ │    │    ├── inner-join
+ │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 lineitem.l_orderkey:int:9 lineitem.l_partkey:int:10 lineitem.l_suppkey:int:11 lineitem.l_linenumber:int:12 lineitem.l_quantity:float:null:13 lineitem.l_extendedprice:float:null:14 lineitem.l_discount:float:null:15 lineitem.l_tax:float:null:16 lineitem.l_returnflag:string:null:17 lineitem.l_linestatus:string:null:18 lineitem.l_shipdate:date:null:19 lineitem.l_commitdate:date:null:20 lineitem.l_receiptdate:date:null:21 lineitem.l_shipinstruct:string:null:22 lineitem.l_shipmode:string:null:23 lineitem.l_comment:string:null:24 orders.o_orderkey:int:25 orders.o_custkey:int:26 orders.o_orderstatus:string:null:27 orders.o_totalprice:float:null:28 orders.o_orderdate:date:null:29 orders.o_orderpriority:string:null:30 orders.o_clerk:string:null:31 orders.o_shippriority:int:null:32 orders.o_comment:string:null:33
+ │    │    │    ├── inner-join
+ │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 lineitem.l_orderkey:int:9 lineitem.l_partkey:int:10 lineitem.l_suppkey:int:11 lineitem.l_linenumber:int:12 lineitem.l_quantity:float:null:13 lineitem.l_extendedprice:float:null:14 lineitem.l_discount:float:null:15 lineitem.l_tax:float:null:16 lineitem.l_returnflag:string:null:17 lineitem.l_linestatus:string:null:18 lineitem.l_shipdate:date:null:19 lineitem.l_commitdate:date:null:20 lineitem.l_receiptdate:date:null:21 lineitem.l_shipinstruct:string:null:22 lineitem.l_shipmode:string:null:23 lineitem.l_comment:string:null:24
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: lineitem.l_orderkey:int:9 lineitem.l_partkey:int:10 lineitem.l_suppkey:int:11 lineitem.l_linenumber:int:12 lineitem.l_quantity:float:null:13 lineitem.l_extendedprice:float:null:14 lineitem.l_discount:float:null:15 lineitem.l_tax:float:null:16 lineitem.l_returnflag:string:null:17 lineitem.l_linestatus:string:null:18 lineitem.l_shipdate:date:null:19 lineitem.l_commitdate:date:null:20 lineitem.l_receiptdate:date:null:21 lineitem.l_shipinstruct:string:null:22 lineitem.l_shipmode:string:null:23 lineitem.l_comment:string:null:24
+ │    │    │    │    └── true [type=bool]
+ │    │    │    ├── scan
+ │    │    │    │    └── columns: orders.o_orderkey:int:25 orders.o_custkey:int:26 orders.o_orderstatus:string:null:27 orders.o_totalprice:float:null:28 orders.o_orderdate:date:null:29 orders.o_orderpriority:string:null:30 orders.o_clerk:string:null:31 orders.o_shippriority:int:null:32 orders.o_comment:string:null:33
+ │    │    │    └── true [type=bool]
+ │    │    └── and [type=bool]
+ │    │         ├── and [type=bool]
+ │    │         │    ├── and [type=bool]
+ │    │         │    │    ├── and [type=bool]
+ │    │         │    │    │    ├── eq [type=bool]
+ │    │         │    │    │    │    ├── variable: customer.c_mktsegment [type=string]
+ │    │         │    │    │    │    └── const: 'MACHINERY' [type=string]
+ │    │         │    │    │    └── eq [type=bool]
+ │    │         │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │         │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │         │    │    └── eq [type=bool]
+ │    │         │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │         │    │         └── variable: orders.o_orderkey [type=int]
+ │    │         │    └── lt [type=bool]
+ │    │         │         ├── variable: orders.o_orderdate [type=date]
+ │    │         │         └── const: '1995-03-10' [type=date]
+ │    │         └── gt [type=bool]
+ │    │              ├── variable: lineitem.l_shipdate [type=date]
+ │    │              └── const: '1995-03-10' [type=date]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	customer JOIN orders ON c_custkey = o_custkey
+	JOIN lineitem ON l_orderkey = o_orderkey
+WHERE
+	c_mktsegment = 'MACHINERY'
+	AND o_orderDATE < DATE '1995-03-10'
+	AND l_shipdate > DATE '1995-03-10'
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:18 revenue:float:null:34 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ ├── group-by
+ │    ├── columns: orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:null:18 revenue:float:null:34
+ │    ├── select
+ │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    ├── inner-join
+ │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    ├── inner-join
+ │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    └── eq [type=bool]
+ │    │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │    │    ├── scan
+ │    │    │    │    └── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    └── eq [type=bool]
+ │    │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │    │         └── variable: orders.o_orderkey [type=int]
+ │    │    └── and [type=bool]
+ │    │         ├── and [type=bool]
+ │    │         │    ├── eq [type=bool]
+ │    │         │    │    ├── variable: customer.c_mktsegment [type=string]
+ │    │         │    │    └── const: 'MACHINERY' [type=string]
+ │    │         │    └── lt [type=bool]
+ │    │         │         ├── variable: orders.o_orderdate [type=date]
+ │    │         │         └── const: '1995-03-10' [type=date]
+ │    │         └── gt [type=bool]
+ │    │              ├── variable: lineitem.l_shipdate [type=date]
+ │    │              └── const: '1995-03-10' [type=date]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	(SELECT * FROM customer WHERE c_mktsegment = 'MACHINERY')
+	JOIN orders ON c_custkey = o_custkey
+	JOIN lineitem ON l_orderkey = o_orderkey
+WHERE
+	o_orderDATE < DATE '1995-03-10'
+	AND l_shipdate > DATE '1995-03-10'
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:18 revenue:float:null:34 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ ├── group-by
+ │    ├── columns: orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:null:18 revenue:float:null:34
+ │    ├── select
+ │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    ├── inner-join
+ │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    ├── inner-join
+ │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    ├── select
+ │    │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    ├── scan
+ │    │    │    │    │    │    └── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    └── eq [type=bool]
+ │    │    │    │    │         ├── variable: customer.c_mktsegment [type=string]
+ │    │    │    │    │         └── const: 'MACHINERY' [type=string]
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    └── eq [type=bool]
+ │    │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │    │    ├── scan
+ │    │    │    │    └── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    └── eq [type=bool]
+ │    │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │    │         └── variable: orders.o_orderkey [type=int]
+ │    │    └── and [type=bool]
+ │    │         ├── lt [type=bool]
+ │    │         │    ├── variable: orders.o_orderdate [type=date]
+ │    │         │    └── const: '1995-03-10' [type=date]
+ │    │         └── gt [type=bool]
+ │    │              ├── variable: lineitem.l_shipdate [type=date]
+ │    │              └── const: '1995-03-10' [type=date]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	(SELECT * FROM customer WHERE c_mktsegment = 'MACHINERY')
+	JOIN (SELECT * FROM orders WHERE o_orderDATE < DATE '1995-03-10') ON c_custkey = o_custkey
+	JOIN lineitem ON l_orderkey = o_orderkey
+WHERE
+	l_shipdate > DATE '1995-03-10'
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:18 revenue:float:null:34 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ ├── group-by
+ │    ├── columns: orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:null:18 revenue:float:null:34
+ │    ├── select
+ │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    ├── inner-join
+ │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    ├── inner-join
+ │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    ├── select
+ │    │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    ├── scan
+ │    │    │    │    │    │    └── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    └── eq [type=bool]
+ │    │    │    │    │         ├── variable: customer.c_mktsegment [type=string]
+ │    │    │    │    │         └── const: 'MACHINERY' [type=string]
+ │    │    │    │    ├── select
+ │    │    │    │    │    ├── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    │    ├── scan
+ │    │    │    │    │    │    └── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    │    └── lt [type=bool]
+ │    │    │    │    │         ├── variable: orders.o_orderdate [type=date]
+ │    │    │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    │    │    └── eq [type=bool]
+ │    │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │    │    ├── scan
+ │    │    │    │    └── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    └── eq [type=bool]
+ │    │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │    │         └── variable: orders.o_orderkey [type=int]
+ │    │    └── gt [type=bool]
+ │    │         ├── variable: lineitem.l_shipdate [type=date]
+ │    │         └── const: '1995-03-10' [type=date]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	(SELECT * FROM customer WHERE c_mktsegment = 'MACHINERY')
+	JOIN (SELECT * FROM orders WHERE o_orderDATE < DATE '1995-03-10') ON c_custkey = o_custkey
+	JOIN (SELECT * FROM lineitem WHERE l_shipdate > DATE '1995-03-10') ON l_orderkey = o_orderkey
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:18 revenue:float:null:34 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ ├── group-by
+ │    ├── columns: orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:null:18 revenue:float:null:34
+ │    ├── inner-join
+ │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    ├── inner-join
+ │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    ├── select
+ │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    └── eq [type=bool]
+ │    │    │    │         ├── variable: customer.c_mktsegment [type=string]
+ │    │    │    │         └── const: 'MACHINERY' [type=string]
+ │    │    │    ├── select
+ │    │    │    │    ├── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    └── lt [type=bool]
+ │    │    │    │         ├── variable: orders.o_orderdate [type=date]
+ │    │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    │    └── eq [type=bool]
+ │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │    ├── select
+ │    │    │    ├── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    ├── scan
+ │    │    │    │    └── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    └── gt [type=bool]
+ │    │    │         ├── variable: lineitem.l_shipdate [type=date]
+ │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    └── eq [type=bool]
+ │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │         └── variable: orders.o_orderkey [type=int]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	(SELECT c_custkey FROM customer WHERE c_mktsegment = 'MACHINERY')
+	JOIN (SELECT * FROM orders WHERE o_orderDATE < DATE '1995-03-10') ON c_custkey = o_custkey
+	JOIN (SELECT * FROM lineitem WHERE l_shipdate > DATE '1995-03-10') ON l_orderkey = o_orderkey
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:18 revenue:float:null:34 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ ├── group-by
+ │    ├── columns: orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:null:18 revenue:float:null:34
+ │    ├── inner-join
+ │    │    ├── columns: customer.c_custkey:int:1 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    ├── inner-join
+ │    │    │    ├── columns: customer.c_custkey:int:1 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    ├── project
+ │    │    │    │    ├── columns: customer.c_custkey:int:1
+ │    │    │    │    ├── select
+ │    │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    ├── scan
+ │    │    │    │    │    │    └── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    └── eq [type=bool]
+ │    │    │    │    │         ├── variable: customer.c_mktsegment [type=string]
+ │    │    │    │    │         └── const: 'MACHINERY' [type=string]
+ │    │    │    │    └── projections
+ │    │    │    │         └── variable: customer.c_custkey [type=int]
+ │    │    │    ├── select
+ │    │    │    │    ├── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    └── lt [type=bool]
+ │    │    │    │         ├── variable: orders.o_orderdate [type=date]
+ │    │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    │    └── eq [type=bool]
+ │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │    ├── select
+ │    │    │    ├── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    ├── scan
+ │    │    │    │    └── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    └── gt [type=bool]
+ │    │    │         ├── variable: lineitem.l_shipdate [type=date]
+ │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    └── eq [type=bool]
+ │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │         └── variable: orders.o_orderkey [type=int]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	(SELECT c_custkey FROM customer WHERE c_mktsegment = 'MACHINERY')
+	JOIN (SELECT o_orderkey, o_custkey, o_orderdate, o_shippriority FROM orders WHERE o_orderDATE < DATE '1995-03-10') ON c_custkey = o_custkey
+	JOIN (SELECT * FROM lineitem WHERE l_shipdate > DATE '1995-03-10') ON l_orderkey = o_orderkey
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:18 revenue:float:null:34 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ ├── group-by
+ │    ├── columns: orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:null:18 revenue:float:null:34
+ │    ├── inner-join
+ │    │    ├── columns: customer.c_custkey:int:1 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    ├── inner-join
+ │    │    │    ├── columns: customer.c_custkey:int:1 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ │    │    │    ├── project
+ │    │    │    │    ├── columns: customer.c_custkey:int:1
+ │    │    │    │    ├── select
+ │    │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    ├── scan
+ │    │    │    │    │    │    └── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    └── eq [type=bool]
+ │    │    │    │    │         ├── variable: customer.c_mktsegment [type=string]
+ │    │    │    │    │         └── const: 'MACHINERY' [type=string]
+ │    │    │    │    └── projections
+ │    │    │    │         └── variable: customer.c_custkey [type=int]
+ │    │    │    ├── project
+ │    │    │    │    ├── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ │    │    │    │    ├── select
+ │    │    │    │    │    ├── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    │    ├── scan
+ │    │    │    │    │    │    └── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    │    └── lt [type=bool]
+ │    │    │    │    │         ├── variable: orders.o_orderdate [type=date]
+ │    │    │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    │    │    └── projections
+ │    │    │    │         ├── variable: orders.o_orderkey [type=int]
+ │    │    │    │         ├── variable: orders.o_custkey [type=int]
+ │    │    │    │         ├── variable: orders.o_orderdate [type=date]
+ │    │    │    │         └── variable: orders.o_shippriority [type=int]
+ │    │    │    └── eq [type=bool]
+ │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │    ├── select
+ │    │    │    ├── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    ├── scan
+ │    │    │    │    └── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    └── gt [type=bool]
+ │    │    │         ├── variable: lineitem.l_shipdate [type=date]
+ │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    └── eq [type=bool]
+ │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │         └── variable: orders.o_orderkey [type=int]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
+
+build
+SELECT
+	l_orderkey,
+	SUM(l_extendedprice * (1 - l_discount)) AS revenue,
+	o_orderdate,
+	o_shippriority
+FROM
+	(SELECT c_custkey FROM customer WHERE c_mktsegment = 'MACHINERY')
+	JOIN (SELECT o_orderkey, o_custkey, o_orderdate, o_shippriority FROM orders WHERE o_orderDATE < DATE '1995-03-10') ON c_custkey = o_custkey
+	JOIN (SELECT l_orderkey, l_extendedprice, l_discount FROM lineitem WHERE l_shipdate > DATE '1995-03-10') ON l_orderkey = o_orderkey
+GROUP BY
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+ORDER BY
+	revenue DESC,
+	o_orderdate;
+----
+project
+ ├── columns: lineitem.l_orderkey:int:null:18 revenue:float:null:34 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ ├── group-by
+ │    ├── columns: orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:null:18 revenue:float:null:34
+ │    ├── inner-join
+ │    │    ├── columns: customer.c_custkey:int:1 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16 lineitem.l_orderkey:int:18 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24
+ │    │    ├── inner-join
+ │    │    │    ├── columns: customer.c_custkey:int:1 orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ │    │    │    ├── project
+ │    │    │    │    ├── columns: customer.c_custkey:int:1
+ │    │    │    │    ├── select
+ │    │    │    │    │    ├── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    ├── scan
+ │    │    │    │    │    │    └── columns: customer.c_custkey:int:1 customer.c_name:string:null:2 customer.c_address:string:null:3 customer.c_nationkey:int:4 customer.c_phone:string:null:5 customer.c_acctbal:float:null:6 customer.c_mktsegment:string:null:7 customer.c_comment:string:null:8
+ │    │    │    │    │    └── eq [type=bool]
+ │    │    │    │    │         ├── variable: customer.c_mktsegment [type=string]
+ │    │    │    │    │         └── const: 'MACHINERY' [type=string]
+ │    │    │    │    └── projections
+ │    │    │    │         └── variable: customer.c_custkey [type=int]
+ │    │    │    ├── project
+ │    │    │    │    ├── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderdate:date:null:13 orders.o_shippriority:int:null:16
+ │    │    │    │    ├── select
+ │    │    │    │    │    ├── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    │    ├── scan
+ │    │    │    │    │    │    └── columns: orders.o_orderkey:int:9 orders.o_custkey:int:10 orders.o_orderstatus:string:null:11 orders.o_totalprice:float:null:12 orders.o_orderdate:date:null:13 orders.o_orderpriority:string:null:14 orders.o_clerk:string:null:15 orders.o_shippriority:int:null:16 orders.o_comment:string:null:17
+ │    │    │    │    │    └── lt [type=bool]
+ │    │    │    │    │         ├── variable: orders.o_orderdate [type=date]
+ │    │    │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    │    │    └── projections
+ │    │    │    │         ├── variable: orders.o_orderkey [type=int]
+ │    │    │    │         ├── variable: orders.o_custkey [type=int]
+ │    │    │    │         ├── variable: orders.o_orderdate [type=date]
+ │    │    │    │         └── variable: orders.o_shippriority [type=int]
+ │    │    │    └── eq [type=bool]
+ │    │    │         ├── variable: customer.c_custkey [type=int]
+ │    │    │         └── variable: orders.o_custkey [type=int]
+ │    │    ├── project
+ │    │    │    ├── columns: lineitem.l_orderkey:int:18 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24
+ │    │    │    ├── select
+ │    │    │    │    ├── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    │    ├── scan
+ │    │    │    │    │    └── columns: lineitem.l_orderkey:int:18 lineitem.l_partkey:int:19 lineitem.l_suppkey:int:20 lineitem.l_linenumber:int:21 lineitem.l_quantity:float:null:22 lineitem.l_extendedprice:float:null:23 lineitem.l_discount:float:null:24 lineitem.l_tax:float:null:25 lineitem.l_returnflag:string:null:26 lineitem.l_linestatus:string:null:27 lineitem.l_shipdate:date:null:28 lineitem.l_commitdate:date:null:29 lineitem.l_receiptdate:date:null:30 lineitem.l_shipinstruct:string:null:31 lineitem.l_shipmode:string:null:32 lineitem.l_comment:string:null:33
+ │    │    │    │    └── gt [type=bool]
+ │    │    │    │         ├── variable: lineitem.l_shipdate [type=date]
+ │    │    │    │         └── const: '1995-03-10' [type=date]
+ │    │    │    └── projections
+ │    │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │    │         ├── variable: lineitem.l_extendedprice [type=float]
+ │    │    │         └── variable: lineitem.l_discount [type=float]
+ │    │    └── eq [type=bool]
+ │    │         ├── variable: lineitem.l_orderkey [type=int]
+ │    │         └── variable: orders.o_orderkey [type=int]
+ │    ├── groupings
+ │    │    ├── variable: lineitem.l_orderkey [type=int]
+ │    │    ├── variable: orders.o_orderdate [type=date]
+ │    │    └── variable: orders.o_shippriority [type=int]
+ │    └── aggregations
+ │         └── function: sum [type=NULL]
+ │              └── mult [type=float]
+ │                   ├── variable: lineitem.l_extendedprice [type=float]
+ │                   └── minus [type=float]
+ │                        ├── const: 1.0 [type=float]
+ │                        └── variable: lineitem.l_discount [type=float]
+ └── projections
+      ├── variable: lineitem.l_orderkey [type=int]
+      ├── variable: revenue [type=float]
+      ├── variable: orders.o_orderdate [type=date]
+      └── variable: orders.o_shippriority [type=int]
