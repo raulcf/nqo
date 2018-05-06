@@ -126,3 +126,29 @@ CREATE TABLE public.lineitem
 );
 ----
 name:"lineitem" id:8 parent_id:0 version:0 up_version:false modification_time:<> columns:<name:"l_orderkey" id:1 type:<semantic_type:INT width:0 precision:0 visible_type:NONE > nullable:false hidden:false > columns:<name:"l_partkey" id:2 type:<semantic_type:INT width:0 precision:0 visible_type:NONE > nullable:false hidden:false > columns:<name:"l_suppkey" id:3 type:<semantic_type:INT width:0 precision:0 visible_type:NONE > nullable:false hidden:false > columns:<name:"l_linenumber" id:4 type:<semantic_type:INT width:0 precision:0 visible_type:NONE > nullable:false hidden:false > columns:<name:"l_quantity" id:5 type:<semantic_type:FLOAT width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_extendedprice" id:6 type:<semantic_type:FLOAT width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_discount" id:7 type:<semantic_type:FLOAT width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_tax" id:8 type:<semantic_type:FLOAT width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_returnflag" id:9 type:<semantic_type:STRING width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_linestatus" id:10 type:<semantic_type:STRING width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_shipdate" id:11 type:<semantic_type:DATE width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_commitdate" id:12 type:<semantic_type:DATE width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_receiptdate" id:13 type:<semantic_type:DATE width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_shipinstruct" id:14 type:<semantic_type:STRING width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_shipmode" id:15 type:<semantic_type:STRING width:0 precision:0 visible_type:NONE > nullable:true hidden:false > columns:<name:"l_comment" id:16 type:<semantic_type:STRING width:0 precision:0 visible_type:NONE > nullable:true hidden:false > next_column_id:0 next_family_id:0 primary_index:<name:"" id:0 unique:false foreign_key:<table:0 index:0 name:"" validity:Validated shared_prefix_len:0 on_delete:NO_ACTION on_update:NO_ACTION > interleave:<> partitioning:<num_columns:0 > type:FORWARD > next_index_id:0 next_mutation_id:0 format_version:0 state:PUBLIC view_query:"" gc_deadline:0 replacement_of:<id:0 time:<> > audit_mode:DISABLED 
+var candidateWithPrefix *columnProps
+var candidateFromAnonymousSource *columnProps
+moreThanOneCandidateWithPrefix := false
+moreThanOneCandidateFromAnonSource := false
+
+...
+
+if col.name == colName && (allowHidden || !col.hidden) {
+	if col.table.TableName == "" {
+               if candidateFromAnonSource != nil { moreThanOneCandidateFromAnonSource = true }
+               candidateFromAnonSource = col
+        } else {
+               if candidateWithPrefix != nil { moreThanOneCandidateWithPrefix = true }
+               candidateWithPrefix = col
+        }
+}
+
+...
+
+if candidateFromAnonSource != nil && !moreThanOneCandidateFromAnonSource {
+    return candidateFromAnonSource
+}
+if moreThanOneCandidateFromAnonSource || moreThanOneCandidateWithPrefix {
+   // error
+}
+return candidateWithPrefix
