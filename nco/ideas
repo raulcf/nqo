@@ -1,0 +1,6 @@
+- try different loss metric. Trying with MAE, try MSE
+- try with monotonicaly increasing cost (as in rank) instead of estimated cost
+- tweak network
+- tweak batch size
+- learn sequence with lstm?
+- mix all other queries (regularization?)

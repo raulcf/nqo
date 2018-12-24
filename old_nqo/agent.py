@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from nqo import world_interface as wi
+from old_nqo import world_interface as wi
 
 experience = []
 gamma = 0

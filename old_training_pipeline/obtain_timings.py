@@ -96,8 +96,8 @@ def __test_call_process():
 if __name__ == "__main__":
     print("Build training data")
 
-    path_to_query_data = "/Users/ra/dev/nqo/raw_query_data/queries.txt"
-    path_to_encoded_queries = "/Users/ra/dev/nqo/raw_query_data/encoded.txt"
+    path_to_query_data = "/Users/ra/dev/old_nqo/raw_query_data/queries.txt"
+    path_to_encoded_queries = "/Users/ra/dev/old_nqo/raw_query_data/encoded.txt"
     path_to_training_data = "test"
 
     training_data = read_queries(path_to_query_data,
